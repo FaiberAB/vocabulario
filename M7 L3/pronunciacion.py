@@ -73,13 +73,10 @@ def speech(language="es-ES"):
         with mic as audio_file:
             recog.adjust_for_ambient_noise(audio_file)
             print("Por favor, di la palabra... 😋")
-            audio = recog.listen(audio_file, timeout=5)  # Tiempo máximo para hablar 5s
+            audio = recog.listen(audio_file, timeout=5) 
             return recog.recognize_google(audio, language=language)
     except speech_recog.UnknownValueError:
-        print("No se entendió nada, intenta de nuevo. 😥")
-        return None
-    except speech_recog.RequestError:
-        print("Error con el servicio de reconocimiento de voz. 😯")
+        print("Intenta de nuevo. 😥")
         return None
     except speech_recog.WaitTimeoutError:
         print("No has dicho nada a tiempo. 🫤")
@@ -97,10 +94,6 @@ def elegir_idioma_y_nivel():
         return elegir_idioma_y_nivel()
 
     return idioma, nivel
-
-def comparar_respuesta(respuesta, palabra, umbral=0.8):
-    ratio = difflib.SequenceMatcher(None, respuesta.lower(), palabra.lower()).ratio()
-    return ratio >= umbral 
 
 def play_game():
     idioma, nivel = elegir_idioma_y_nivel()
@@ -133,7 +126,7 @@ def play_game():
 
             if respuesta is None:
                 intentos -= 1  
-            elif comparar_respuesta(respuesta, palabra):
+            elif respuesta.lower() == palabra.lower():
                 print("¡Correcto! 😜")
                 score += 1
                 break  
