@@ -66,7 +66,6 @@ pronunciaciones = {
     "искусственный интеллект (iskusstvennyy intellekt)": ["iskusstvennyy intellekt"]
 }
 
-# Función para reconocer la voz del usuario
 def speech(language="es-ES"):
     recog = speech_recog.Recognizer()
     mic = speech_recog.Microphone()
@@ -87,7 +86,6 @@ def speech(language="es-ES"):
         print("No has dicho nada a tiempo. 🫤")
         return None
 
-# Función para elegir el idioma y nivel por texto
 def elegir_idioma_y_nivel():
     idioma = input("Por favor, elige el idioma ('español', 'ingles', 'frances', 'japones', 'ruso'): ").lower()
     if idioma not in ["español", "ingles", "frances", "japones", "ruso"]:
@@ -101,10 +99,9 @@ def elegir_idioma_y_nivel():
 
     return idioma, nivel
 
-# Función para comparar la respuesta con la palabra usando difflib
 def comparar_respuesta(respuesta, palabra, umbral=0.8):
     ratio = difflib.SequenceMatcher(None, respuesta.lower(), palabra.lower()).ratio()
-    return ratio >= umbral  # Si la similitud es mayor al umbral (80%)
+    return ratio >= umbral 
 
 def play_game():
     idioma, nivel = elegir_idioma_y_nivel()
@@ -118,7 +115,7 @@ def play_game():
     }
 
     palabras = niveles[nivel][idioma]
-    language = idioma_map.get(idioma, "es-ES")  # Usamos el idioma seleccionado para el reconocimiento
+    language = idioma_map.get(idioma, "es-ES") 
 
     score = 0
     intentos_totales = 3 
@@ -128,7 +125,7 @@ def play_game():
         while intentos > 0:
             print(f"Tienes {intentos} intentos para decir: '{palabra}'")
             inicio = time.time()
-            respuesta = speech(language)  # Llamamos a la función de reconocimiento de voz
+            respuesta = speech(language)  
             tiempo_transcurrido = time.time() - inicio
 
             if tiempo_transcurrido > 5:
@@ -136,14 +133,14 @@ def play_game():
                 break
 
             if respuesta is None:
-                intentos -= 1  # Si no se entendió nada, perdemos un intento
+                intentos -= 1  
             elif comparar_respuesta(respuesta, palabra):
                 print("¡Correcto! 😜")
                 score += 1
-                break  # Si la palabra fue correcta, pasamos a la siguiente palabra
+                break  
             else:
                 print("Incorrecto. Inténtalo de nuevo. 🙌")
-                intentos -= 1  # Si la palabra es incorrecta, perdemos un intento
+                intentos -= 1 
 
         if intentos == 0:
             print(f"No lograste decir '{palabra}' correctamente. 🤐")
@@ -158,6 +155,5 @@ def play_game():
     
     print(f"Puntuación final: {score}/{len(palabras)} 👌")
 
-# Ejecutar el juego
 if __name__ == "__main__":
     play_game()
