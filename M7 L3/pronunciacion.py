@@ -1,7 +1,6 @@
 import speech_recognition as speech_recog
 import random
 import time
-import difflib
 
 niveles = {
     "facil": {
